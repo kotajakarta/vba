@@ -1,0 +1,18 @@
+Sub Cetak()
+Dim Phon, Akhee As Integer
+Phon = Range("A8").Value
+Akhee = Range("A9").Value
+If Phon <= Akhee And Phon >= 1 Then
+Application.ScreenUpdating = False
+    For i = Phon To Akhee
+        With Sheets("transkip")
+            .Range("A8").Value = i
+            .PRINTOUT
+        End With
+    Next i
+Else
+    MsgBox "Cek lagi Nomor yang akan dicetak...!!!!", vbCritical, "Cetak Halaman"
+End If
+
+End Sub
+
