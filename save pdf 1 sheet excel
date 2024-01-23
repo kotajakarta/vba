@@ -1,0 +1,42 @@
+Function Save_PDFTranskip() As Boolean  ' Copies sheets into new PDF file for e-mailing
+    Dim Thissheet As String, ThisFile As String, PathName As String
+    Dim SvAs As String
+
+Application.ScreenUpdating = False
+
+' Get File Save Name
+    Thissheet = ActiveSheet.Name
+    ThisFile = ActiveWorkbook.Name
+    PathName = ActiveWorkbook.Path
+    SvAs = PathName & "\" & Range("b2") & "_" & Range("B5") & "_Nilai Transkrip" & ".pdf"
+
+'Set Print Quality
+    On Error Resume Next
+    ActiveSheet.PageSetup.PrintQuality = 600
+    Err.Clear
+    On Error GoTo 0
+
+' Instruct user how to send
+    On Error GoTo RefLibError
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=SvAs, Quality:=xlQualityStandard, IncludeDocProperties:=False, IgnorePrintAreas:=False, OpenAfterPublish:=False
+    On Error GoTo 0
+    
+SaveOnly:
+    MsgBox "Sukses membuat file PDF, letak lokasi file adalah : " & Chr(13) & Chr(13) & SvAs & _
+        ". Silahkan cek file PDF yang telah anda buat. Jika hasil PDF nya belum sesuai, silahkan perbaikai pada pengaturan print dan coba lagi."
+        
+    Save_PDFTranskip = True
+    GoTo EndMacro
+    
+RefLibError:
+    MsgBox "Gagal membuat PDF. Lokasi file penyimpanan tidak ditemukan."
+    Save_PDFTranskip = False
+EndMacro:
+End Function
+
+Sub pdftranskip()
+Call Save_PDFTranskip
+End Sub
+
+
+
