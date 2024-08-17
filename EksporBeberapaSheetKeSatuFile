@@ -1,0 +1,36 @@
+' eksport beberapa sheet dengan file terpisah sesuai sheet
+
+
+Sub EksporBeberapaSheetKeSatuFile()
+    Dim wb As Workbook
+    Dim ws As Worksheet
+    Dim arrSheets As Variant
+    Dim savePath As String
+    Dim fileName As String
+
+    ' Daftar sheet yang ingin diekspor (sesuaikan)
+    arrSheets = Array("export1", "export2")
+
+    ' Lokasi penyimpanan file baru (sesuaikan)
+    savePath = ThisWorkbook.Path & "\" & "gabungan_export.xlsx"
+
+    ' Membuat workbook baru
+    Set wb = Workbooks.Add
+
+    ' Menyalin sheet ke workbook baru
+    For Each sheetName In arrSheets
+        On Error Resume Next ' Untuk mengatasi jika sheet tidak ditemukan
+        With ThisWorkbook.Sheets(sheetName)
+            .Copy After:=wb.Sheets(wb.Sheets.Count)
+        End With
+        On Error GoTo 0
+    Next sheetName
+
+    ' Menyimpan file baru
+    wb.SaveAs Filename:=savePath
+
+    ' Menutup workbook baru tanpa menyimpan perubahan
+    wb.Close SaveChanges:=False
+
+    MsgBox "Sheet telah berhasil digabungkan dan diekspor ke satu file!"
+End Sub
