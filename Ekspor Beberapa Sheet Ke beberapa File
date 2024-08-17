@@ -1,7 +1,4 @@
-' eksport beberapa sheet dengan file terpisah sesuai sheet
-
-
-Sub EksporBeberapaSheetKeSatuFile()
+Sub EksporBeberapaSheet()
     Dim wb As Workbook
     Dim ws As Worksheet
     Dim arrSheets As Variant
@@ -12,7 +9,7 @@ Sub EksporBeberapaSheetKeSatuFile()
     arrSheets = Array("export1", "export2")
 
     ' Lokasi penyimpanan file baru (sesuaikan)
-    savePath = ThisWorkbook.Path & "\" & "gabungan_export.xlsx"
+    savePath = ThisWorkbook.Path & "\" & "export\"
 
     ' Membuat workbook baru
     Set wb = Workbooks.Add
@@ -24,13 +21,16 @@ Sub EksporBeberapaSheetKeSatuFile()
             .Copy After:=wb.Sheets(wb.Sheets.Count)
         End With
         On Error GoTo 0
-    Next sheetName
 
-    ' Menyimpan file baru
-    wb.SaveAs Filename:=savePath
+        ' Membuat nama file berdasarkan nama sheet
+        fileName = sheetName & ".xlsx"
+
+        ' Menyimpan file baru
+        wb.SaveAs fileName:=savePath & fileName
+    Next sheetName
 
     ' Menutup workbook baru tanpa menyimpan perubahan
     wb.Close SaveChanges:=False
 
-    MsgBox "Sheet telah berhasil digabungkan dan diekspor ke satu file!"
+    MsgBox "Sheet telah berhasil diekspor!"
 End Sub
